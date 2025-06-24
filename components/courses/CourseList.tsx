@@ -28,7 +28,7 @@ export default function CourseList() {
   if (error) return <div>Error loading courses</div>;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {data.map((course: any) => (
         <div key={course._id} className="border p-4 rounded">
           {editId === course._id ? (
