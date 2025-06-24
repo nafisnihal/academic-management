@@ -19,7 +19,7 @@ export async function PUT(
     (c: any) => c.courseId === body.courseId
   );
 
-  // ❌ If already assigned, return an error
+  // If already assigned, return an error
   if (alreadyEnrolled) {
     return NextResponse.json(
       { error: "Student is already enrolled in this course." },
@@ -27,7 +27,7 @@ export async function PUT(
     );
   }
 
-  // ✅ Otherwise, assign the course
+  // Otherwise, assign the course
   student.enrolledCourses.push({
     courseId: body.courseId,
     grade: body.grade,

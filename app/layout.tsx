@@ -1,10 +1,10 @@
+import StructuredLayout from "@/components/layout/StructuredLayout";
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/lib/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import { ThemeProvider } from "@/lib/theme-provider";
-import StructuredLayout from "@/components/layout/StructuredLayout";
-import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +38,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <StructuredLayout>
-            <Providers>
-              {children} <Toaster />
-            </Providers>
+            <Providers>{children}</Providers>
+            <Toaster />
           </StructuredLayout>
         </ThemeProvider>
       </body>

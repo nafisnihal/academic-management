@@ -52,7 +52,7 @@ export default async function StudentProfile({ params }: Props) {
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-bold">Student Profile</h1>
 
-      <div className="bg-white rounded shadow p-4 space-y-2">
+      <div className=" rounded shadow p-4 space-y-2">
         <p>
           <strong>Name:</strong> {student.name}
         </p>
@@ -66,11 +66,11 @@ export default async function StudentProfile({ params }: Props) {
 
       <h2 className="text-xl font-semibold mt-6">Enrolled Courses</h2>
       {enrolledDetails.length === 0 ? (
-        <p className="text-gray-500">No courses enrolled</p>
+        <p className="">No courses enrolled</p>
       ) : (
         <div className="space-y-3">
           {enrolledDetails.map((course, idx) => (
-            <div key={idx} className="bg-gray-50 border p-4 rounded space-y-1">
+            <div key={idx} className=" border p-4 rounded space-y-1">
               <p>
                 <strong>{course.courseName}</strong> ({course.courseCode})
               </p>

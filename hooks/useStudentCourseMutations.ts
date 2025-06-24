@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { toast } from "sonner";
 
 export const useAssignCourseToStudent = () => {
   const queryClient = useQueryClient();
@@ -28,7 +29,7 @@ export const useAssignCourseToStudent = () => {
     },
     onError: (error: any) => {
       if (error.response?.data?.error) {
-        alert(error.response.data.error);
+        toast(error.response.data.error);
       }
     },
   });
