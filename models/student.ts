@@ -7,8 +7,9 @@ const StudentSchema = new Schema(
     gpa: { type: Number, default: 0.0 },
     enrolledCourses: [
       {
-        courseId: { type: String },
-        grade: { type: String },
+        courseId: { type: String, required: true },
+        grade: { type: Number, default: null },
+        progress: { type: String, default: "" },
       },
     ],
   },

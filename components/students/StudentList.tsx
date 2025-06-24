@@ -5,6 +5,7 @@ import {
   useUpdateStudent,
 } from "@/hooks/useStudentMutations";
 import { useStudents } from "@/hooks/useStudents";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function StudentList() {
@@ -71,6 +72,12 @@ export default function StudentList() {
               </p>
               <p>Email: {student.email}</p>
               <p>GPA: {student.gpa}</p>
+              <Link
+                href={`/students/${student._id}`}
+                className="text-blue-600 underline text-sm"
+              >
+                View Profile
+              </Link>
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => handleEdit(student)}
