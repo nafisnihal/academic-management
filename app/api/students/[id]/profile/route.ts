@@ -4,6 +4,26 @@ import { Student } from "@/models/student";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+interface EnrolledCourse {
+  courseId: string;
+  grade?: number;
+  progress?: string;
+}
+
+interface StudentType {
+  _id: string;
+  name: string;
+  email: string;
+  gpa?: number;
+  enrolledCourses: EnrolledCourse[];
+}
+
+interface CourseType {
+  _id: string;
+  name?: string;
+  code?: string;
+}
+
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
@@ -11,10 +31,13 @@ export async function GET(
   try {
     await connectToDB();
 
-    const studentResult = await Student.findById(context.params.id).lean();
+    const studentResult = await Student.findById(
+      context.params.id
+    ).lean<StudentType | null>();
     const student = Array.isArray(studentResult)
       ? studentResult[0]
       : studentResult;
+
     if (!student) {
       return NextResponse.json(
         { message: "Student not found" },
@@ -22,15 +45,21 @@ export async function GET(
       );
     }
 
-    // Ensure student has enrolledCourses property
-    const enrolledCourses = (student as any).enrolledCourses || [];
+    // Make sure enrolledCourses exists and is properly typed
+    const enrolledCourses = student.enrolledCourses ?? [];
+
     const enrolledDetails = await Promise.all(
-      enrolledCourses.map(async (enrolled: any) => {
-        const course = await Course.findById(enrolled.courseId).lean();
-        const courseObj = Array.isArray(course) ? course[0] : course;
+      enrolledCourses.map(async (enrolled: EnrolledCourse) => {
+        const courseResult = await Course.findById(
+          enrolled.courseId
+        ).lean<CourseType | null>();
+        const course = Array.isArray(courseResult)
+          ? courseResult[0]
+          : courseResult;
+
         return {
-          courseName: courseObj?.name || "Unknown",
-          courseCode: courseObj?.code || "",
+          courseName: course?.name || "Unknown",
+          courseCode: course?.code || "",
           grade: enrolled.grade,
           progress: enrolled.progress,
         };
