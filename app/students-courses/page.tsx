@@ -1,20 +1,29 @@
-import AddCourseForm from "@/components/courses/AddCourseForm";
-import CourseList from "@/components/courses/CourseList";
-import Faculties from "@/components/faculty/Faculties";
-import AddStudentForm from "@/components/students/AddStudentForm";
-import StudentList from "@/components/students/StudentList";
+import CourseTable from "@/components/courses/CourseTable";
+import StudentTable from "@/components/students/StudentTable";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function page() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 space-y-8">
-      <h1 className="text-2xl font-bold">Students</h1>
-      <StudentList />
-      <AddStudentForm />
-      <h1 className="text-2xl font-bold">Faculties</h1>
-      <Faculties />
-      <h1 className="text-2xl font-bold">Courses</h1>
-      <CourseList />
-      <AddCourseForm />
+    <div className="pt-9">
+      <Tabs defaultValue="students" className="w-full">
+        <TabsList className="px-2">
+          <TabsTrigger value="students">Students</TabsTrigger>
+          <TabsTrigger value="courses">Courses</TabsTrigger>
+        </TabsList>
+        <TabsContent value="students">
+          <Card className="p-4">
+            <StudentTable />
+          </Card>
+        </TabsContent>
+        <TabsContent value="courses">
+          <Card className="p-4">
+            <CourseTable />
+          </Card>
+          {/* <CourseList />
+          <AddCourseForm /> */}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

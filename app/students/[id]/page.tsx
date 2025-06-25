@@ -1,89 +1,61 @@
-import { connectToDB } from "@/lib/db";
-import { Course } from "@/models/course";
-import { Student } from "@/models/student";
+"use client";
 
-interface Props {
-  params: { id: string };
-}
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { useParams } from "next/navigation";
 
-interface EnrolledCourse {
-  courseId: string;
-  grade?: number;
-  progress?: string;
-}
+export default function StudentProfilePage() {
+  const { id } = useParams() as { id: string };
+  const { data, isLoading, error } = useStudentProfile(id);
 
-interface StudentType {
-  _id: string;
-  name: string;
-  email: string;
-  gpa?: number;
-  enrolledCourses: EnrolledCourse[];
-}
-
-interface CourseInfo {
-  courseName: string;
-  courseCode: string;
-  grade?: number;
-  progress?: string;
-}
-
-export default async function StudentProfile({ params }: Props) {
-  await connectToDB();
-
-  const student = await Student.findById(params.id).lean<StudentType>();
-  if (!student) return <div>Student not found</div>;
-
-  const enrolledDetails: CourseInfo[] = await Promise.all(
-    student.enrolledCourses.map(async (enrolled) => {
-      const course = await Course.findById(enrolled.courseId).lean<{
-        name?: string;
-        code?: string;
-      }>();
-      return {
-        courseName: course?.name || "Unknown",
-        courseCode: course?.code || "",
-        grade: enrolled.grade,
-        progress: enrolled.progress,
-      };
-    })
-  );
+  if (isLoading) return <Skeleton className="h-40 max-w-3xl mx-auto mt-9" />;
+  if (error || !data)
+    return <p className="text-red-600">Failed to load student.</p>;
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Student Profile</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Student Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p>
+            <strong>Name:</strong> {data.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {data.email}
+          </p>
+          <p>
+            <strong>GPA:</strong> {data.gpa ?? "N/A"}
+          </p>
+        </CardContent>
+      </Card>
 
-      <div className=" rounded shadow p-4 space-y-2">
-        <p>
-          <strong>Name:</strong> {student.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {student.email}
-        </p>
-        <p>
-          <strong>GPA:</strong> {student.gpa ?? "N/A"}
-        </p>
-      </div>
-
-      <h2 className="text-xl font-semibold mt-6">Enrolled Courses</h2>
-      {enrolledDetails.length === 0 ? (
-        <p className="">No courses enrolled</p>
-      ) : (
-        <div className="space-y-3">
-          {enrolledDetails.map((course, idx) => (
-            <div key={idx} className=" border p-4 rounded space-y-1">
-              <p>
-                <strong>{course.courseName}</strong> ({course.courseCode})
-              </p>
-              <p>
-                <strong>Grade:</strong> {course.grade ?? "N/A"}
-              </p>
-              <p>
-                <strong>Progress:</strong> {course.progress || "N/A"}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Enrolled Courses</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {data.enrolledCourses?.length === 0 ? (
+            <p>No courses enrolled.</p>
+          ) : (
+            data.enrolledCourses.map((course: any, idx: number) => (
+              <div key={idx} className="border rounded p-3 space-y-1">
+                <p>
+                  <strong>{course.courseName}</strong> ({course.courseCode})
+                </p>
+                <p>
+                  <strong>Grade:</strong> {course.grade ?? "N/A"}
+                </p>
+                <p>
+                  <strong>Progress:</strong> {course.progress || "N/A"}
+                </p>
+              </div>
+            ))
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
