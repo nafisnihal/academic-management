@@ -2,57 +2,40 @@ import { connectToDB } from "@/lib/db";
 import { Course } from "@/models/course";
 import { NextRequest, NextResponse } from "next/server";
 
-// Define expected params type
-interface Params {
-  params: {
-    id: string;
-  };
-}
-
 // UPDATE course
-export async function PUT(req: NextRequest, { params }: Params) {
-  await connectToDB();
-
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
+    await connectToDB();
     const body = await req.json();
-    const updatedCourse = await Course.findByIdAndUpdate(params.id, body, {
-      new: true,
-    });
-
-    if (!updatedCourse) {
-      return NextResponse.json(
-        { message: "Course not found" },
-        { status: 404 }
-      );
-    }
-
+    const updatedCourse = await Course.findByIdAndUpdate(
+      context.params.id,
+      body,
+      { new: true }
+    );
     return NextResponse.json(updatedCourse);
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to update course", error: (error as Error).message },
+      { message: "Failed to update course", error },
       { status: 500 }
     );
   }
 }
 
 // DELETE course
-export async function DELETE(_req: NextRequest, { params }: Params) {
-  await connectToDB();
-
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const deleted = await Course.findByIdAndDelete(params.id);
-
-    if (!deleted) {
-      return NextResponse.json(
-        { message: "Course not found" },
-        { status: 404 }
-      );
-    }
-
+    await connectToDB();
+    await Course.findByIdAndDelete(context.params.id);
     return NextResponse.json({ message: "Course deleted" });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to delete course", error: (error as Error).message },
+      { message: "Failed to delete course", error },
       { status: 500 }
     );
   }
