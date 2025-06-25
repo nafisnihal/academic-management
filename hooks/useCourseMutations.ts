@@ -1,5 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+
+
+export const useCourses = () => {
+  return useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => {
+      const res = await axios.get("/api/courses");
+      return res.data;
+    },
+  });
+};
+
 
 export const useUpdateCourse = () => {
   const queryClient = useQueryClient();

@@ -2,9 +2,9 @@
 
 import {
   useDeleteStudent,
+  useStudents,
   useUpdateStudent,
 } from "@/hooks/useStudentMutations";
-import { useStudents } from "@/hooks/useStudents";
 import Link from "next/link";
 import { useState } from "react";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useCourses } from "@/hooks/useCourses";
+import { useCourses } from "@/hooks/useCourseMutations";
 import { useAssignCourseToStudent } from "@/hooks/useStudentCourseMutations";
-import { useStudents } from "@/hooks/useStudents";
+import { useStudents } from "@/hooks/useStudentMutations";
 import { useState } from "react";
 
 export default function FacultyPanel() {

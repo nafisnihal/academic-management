@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
@@ -21,7 +20,8 @@ export default function StructuredLayout({
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="mx-2 h-5 w-[1px] bg-accent" />
+            <h1 className="text-sm font-semibold">Academic Management</h1>
           </div>
           <ThemeToggle />
         </header>

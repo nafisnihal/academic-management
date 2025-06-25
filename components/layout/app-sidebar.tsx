@@ -6,7 +6,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -21,6 +20,11 @@ const sidebarItems = [
     url: "/",
   },
   {
+    title: "Student & Course",
+    icon: Table,
+    url: "/students-courses",
+  },
+  {
     title: "Faculty Panel",
     icon: Table,
     url: "/faculty-panel",
@@ -30,9 +34,9 @@ const sidebarItems = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props} className="">
-      <SidebarContent className="pt-12">
+      <SidebarContent className="pt-14">
         <SidebarGroup>
-          <SidebarGroupLabel>Employee Views</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Academics</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {sidebarItems.map((item) => (

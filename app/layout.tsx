@@ -1,10 +1,10 @@
 import StructuredLayout from "@/components/layout/StructuredLayout";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/lib/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
+import Providers from "../providers/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

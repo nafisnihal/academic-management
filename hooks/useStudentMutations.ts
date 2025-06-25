@@ -1,5 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+
+export const useStudents = () => {
+  return useQuery({
+    queryKey: ["students"],
+    queryFn: async () => {
+      const res = await axios.get("/api/students");
+      return res.data;
+    },
+  });
+};
 
 export const useUpdateStudent = () => {
   const queryClient = useQueryClient();
