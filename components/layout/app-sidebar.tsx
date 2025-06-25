@@ -20,7 +20,7 @@ const sidebarItems = [
     url: "/",
   },
   {
-    title: "Student & Course",
+    title: "Students & Courses",
     icon: Table,
     url: "/students-courses",
   },

@@ -1,4 +1,5 @@
 "use client";
+import { useTheme } from "next-themes";
 import Chart from "react-apexcharts";
 
 export default function BarChart({
@@ -6,6 +7,7 @@ export default function BarChart({
 }: {
   data: { name: string; count: number }[];
 }) {
+  const { theme } = useTheme();
   const options = {
     chart: {
       id: "popular-courses",
@@ -26,7 +28,9 @@ export default function BarChart({
         endingShape: "flat",
       },
     },
-    colors: ["#fff"],
+    colors: [
+      theme === "dark" ? "#fff" : "#000", // Indigo for dark mode, blue for light mode
+    ],
     xaxis: {
       categories: data.map((d) => d.name),
       labels: {

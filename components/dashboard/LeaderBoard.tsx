@@ -24,7 +24,7 @@ export default function LeaderBoard({ data }: LeaderBoardProps) {
     <Card className="p-6 shadow-md border rounded-xl">
       <div className="flex items-center gap-4 mb-4">
         <Trophy />
-        <h2 className="text-xl font-semibold">Top Students by GPA</h2>
+        <h2 className="text-lg font-semibold">Top Students by GPA</h2>
       </div>
 
       <Table>
