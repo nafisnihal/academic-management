@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { connectToDB } from "@/lib/db";
 import { Course } from "@/models/course";
 import { NextRequest, NextResponse } from "next/server";
