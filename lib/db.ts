@@ -1,25 +1,28 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGO_URI as string;
+type MongooseConnection = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
-}
+const globalWithMongoose = global as typeof globalThis & {
+  mongoose?: MongooseConnection;
+};
 
-// Global cache to prevent re-connecting in hot reload (Next.js dev mode)
-let cached = (global as any).mongoose || { conn: null, promise: null };
+const cached: MongooseConnection = globalWithMongoose.mongoose ?? {
+  conn: null,
+  promise: null,
+};
 
 export async function connectToDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "academic_dashboard",
-      bufferCommands: false,
-    });
+    cached.promise = mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URI!);
   }
 
   cached.conn = await cached.promise;
-  (global as any).mongoose = cached;
+  globalWithMongoose.mongoose = cached;
+
   return cached.conn;
 }

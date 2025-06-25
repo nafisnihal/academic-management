@@ -24,15 +24,20 @@ interface Faculty {
   email: string;
 }
 
-interface HandleAddEvent extends React.FormEvent<HTMLFormElement> {}
+interface FacultyManagementModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
 
-export default function FacultyManagementModal() {
+export default function FacultyManagementModal({
+  open,
+  onOpenChange,
+}: FacultyManagementModalProps) {
   const { data: faculties, isLoading } = useFaculties();
   const [form, setForm] = useState({ name: "", email: "" });
   const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
 
-  const handleAdd = async (e: HandleAddEvent) => {
+  const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.name || !form.email) return;
     try {
@@ -55,12 +60,13 @@ export default function FacultyManagementModal() {
     }
   };
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Manage Faculties</Button>
-      </DialogTrigger>
+  const handleClose = () => {
+    setForm({ name: "", email: "" });
+    onOpenChange(false);
+  };
 
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Faculty Management</DialogTitle>
@@ -106,7 +112,7 @@ export default function FacultyManagementModal() {
           ) : faculties?.length === 0 ? (
             <p className="text-sm text-muted-foreground">No faculties found.</p>
           ) : (
-            faculties?.map((faculty: Faculty) => (
+            faculties.map((faculty: Faculty) => (
               <div
                 key={faculty._id}
                 className="flex items-center justify-between border px-3 py-2 rounded-md"

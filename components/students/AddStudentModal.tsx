@@ -37,8 +37,11 @@ export default function AddStudentModal({
       queryClient.invalidateQueries({ queryKey: ["students"] });
       setForm({ name: "", email: "", gpa: "" });
       onOpenChange(false);
-    } catch (error) {
-      toast.error("Failed to add student");
+      // @ts-nocheck
+      // eslint-disable-next-line
+    } catch (error: any) {
+      // eslint-disable-next-line
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
 

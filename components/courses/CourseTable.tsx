@@ -56,6 +56,7 @@ export default function CourseTable() {
   const [coursesPerPage, setCoursesPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isFacultyDialogOpen, setIsFacultyDialogOpen] = useState(false);
 
   const indexOfLast = currentPage * coursesPerPage;
   const indexOfFirst = indexOfLast - coursesPerPage;
@@ -116,7 +117,13 @@ export default function CourseTable() {
             >
               + Add Course
             </Button>
-            <FacultyManagementModal />
+            <Button
+              variant="outline"
+              onClick={() => setIsFacultyDialogOpen(true)}
+              className="cursor-pointer"
+            >
+              Manage Faculty
+            </Button>
           </div>
           <div className="flex justify-end items-center gap-4">
             <Input
@@ -239,6 +246,10 @@ export default function CourseTable() {
         </div>
       </div>
       <AddCourseModal open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+      <FacultyManagementModal
+        open={isFacultyDialogOpen}
+        onOpenChange={setIsFacultyDialogOpen}
+      />
     </>
   );
 }
