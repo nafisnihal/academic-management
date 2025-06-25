@@ -58,6 +58,7 @@ export default function CourseList() {
               <h2 className="font-bold text-lg">{course.name}</h2>
               <p>Code: {course.code}</p>
               <p>Total Enrolled: {course.enrolledStudentIds?.length || 0}</p>
+              <p>Faculty: {course.facultyName}</p>
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => handleEdit(course)}
