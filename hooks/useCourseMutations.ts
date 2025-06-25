@@ -1,9 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
+// Define the structure of a Course
+export interface Course {
+  _id: string;
+  name: string;
+  code: string;
+  facultyId: string;
+  enrolledStudentIds: string[];
+}
 
+// Input type for updating a course
+interface UpdateCoursePayload {
+  id: string;
+  data: Partial<Omit<Course, "_id" | "enrolledStudentIds">>;
+}
+
+// 🔁 Fetch Courses
 export const useCourses = () => {
-  return useQuery({
+  return useQuery<Course[]>({
     queryKey: ["courses"],
     queryFn: async () => {
       const res = await axios.get("/api/courses");
@@ -12,13 +27,13 @@ export const useCourses = () => {
   });
 };
 
-
+// ✏️ Update Course
 export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
-      const res = await axios.put(`/api/courses/${id}`, data);
+    mutationFn: async ({ id, data }: UpdateCoursePayload) => {
+      const res = await axios.put<Course>(`/api/courses/${id}`, data);
       return res.data;
     },
     onSuccess: () => {
@@ -27,6 +42,7 @@ export const useUpdateCourse = () => {
   });
 };
 
+// ❌ Delete Course
 export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
 

@@ -28,6 +28,25 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import AddStudentModal from "./AddStudentModal";
 
+interface Student {
+  _id: string;
+  name: string;
+  email: string;
+  gpa?: number;
+  courses?: {
+    courseId: string;
+    grade?: number;
+    progress?: string;
+  }[];
+}
+
+interface HandleEditArg {
+  _id: string;
+  name: string;
+  email: string;
+  gpa?: number;
+}
+
 export default function StudentTable() {
   const { data = [], isLoading, error, refetch } = useStudents();
   const { mutate: deleteStudent } = useDeleteStudent();
@@ -47,7 +66,7 @@ export default function StudentTable() {
 
   useEffect(() => {
     const filtered = data.filter(
-      (s: any) =>
+      (s: Student) =>
         s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -55,14 +74,15 @@ export default function StudentTable() {
     setCurrentPage(1);
   }, [searchTerm, data]);
 
-  const handleEdit = (student: any) => {
+
+const handleEdit = (student: HandleEditArg) => {
     setEditId(student._id);
     setForm({
-      name: student.name,
-      email: student.email,
-      gpa: student.gpa?.toString() ?? "",
+        name: student.name,
+        email: student.email,
+        gpa: student.gpa?.toString() ?? "",
     });
-  };
+};
 
   const handleUpdate = () => {
     updateStudent(
@@ -140,7 +160,7 @@ export default function StudentTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentStudents.map((student: any) =>
+              {currentStudents.map((student: Student) =>
                 editId === student._id ? (
                   <TableRow key={student._id}>
                     <TableCell>
@@ -234,10 +254,7 @@ export default function StudentTable() {
           ))}
         </div>
       </div>
-      <AddStudentModal
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-      />
+      <AddStudentModal open={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </>
   );
 }

@@ -15,7 +15,15 @@ export default function CourseList() {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", code: "" });
 
-  const handleEdit = (course: any) => {
+  interface Course {
+    _id: string;
+    name: string;
+    code: string;
+    enrolledStudentIds?: string[];
+    facultyName?: string;
+  }
+
+  const handleEdit = (course: Course): void => {
     setEditId(course._id);
     setForm({ name: course.name, code: course.code });
   };
@@ -32,7 +40,7 @@ export default function CourseList() {
 
   return (
     <div className="space-y-5">
-      {data.map((course: any) => (
+      {data?.map((course: Course) => (
         <div key={course._id} className="border p-4 rounded">
           {editId === course._id ? (
             <div className="space-y-2">

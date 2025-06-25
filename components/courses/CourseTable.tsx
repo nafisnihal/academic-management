@@ -28,13 +28,29 @@ import { toast } from "sonner";
 import FacultyManagementModal from "../faculty/FacultyManagementModal";
 import AddCourseModal from "./AddCourseModal";
 
+interface Course {
+  _id: string;
+  name: string;
+  code: string;
+  enrolledStudentIds?: string[];
+  facultyName?: string;
+}
+
+interface EditableCourse {
+  _id: string;
+  name: string;
+  code: string;
+}
+
 export default function CourseTable() {
   const { data = [], isLoading, error, refetch } = useCourses();
   const { mutate: deleteCourse } = useDeleteCourse();
   const { mutate: updateCourse } = useUpdateCourse();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredCourses, setFilteredCourses] = useState(data);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>(
+    data as Course[]
+  );
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", code: "" });
   const [coursesPerPage, setCoursesPerPage] = useState(5);
@@ -46,8 +62,8 @@ export default function CourseTable() {
   const currentCourses = filteredCourses.slice(indexOfFirst, indexOfLast);
 
   useEffect(() => {
-    const filtered = data.filter(
-      (c: any) =>
+    const filtered = (data as Course[]).filter(
+      (c: Course) =>
         c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         c.code.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -55,7 +71,7 @@ export default function CourseTable() {
     setCurrentPage(1);
   }, [searchTerm, data]);
 
-  const handleEdit = (course: any) => {
+  const handleEdit = (course: EditableCourse) => {
     setEditId(course._id);
     setForm({ name: course.name, code: course.code });
   };
@@ -140,7 +156,7 @@ export default function CourseTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentCourses.map((course: any) =>
+              {currentCourses.map((course: Course) =>
                 editId === course._id ? (
                   <TableRow key={course._id}>
                     <TableCell>

@@ -18,13 +18,21 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 
+interface Faculty {
+  _id: string;
+  name: string;
+  email: string;
+}
+
+interface HandleAddEvent extends React.FormEvent<HTMLFormElement> {}
+
 export default function FacultyManagementModal() {
   const { data: faculties, isLoading } = useFaculties();
   const [form, setForm] = useState({ name: "", email: "" });
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
 
-  const handleAdd = async (e: any) => {
+  const handleAdd = async (e: HandleAddEvent) => {
     e.preventDefault();
     if (!form.name || !form.email) return;
     try {
@@ -98,7 +106,7 @@ export default function FacultyManagementModal() {
           ) : faculties?.length === 0 ? (
             <p className="text-sm text-muted-foreground">No faculties found.</p>
           ) : (
-            faculties?.map((faculty: any) => (
+            faculties?.map((faculty: Faculty) => (
               <div
                 key={faculty._id}
                 className="flex items-center justify-between border px-3 py-2 rounded-md"

@@ -16,9 +16,26 @@ import { useStudents } from "@/hooks/useStudentMutations";
 import { useState } from "react";
 import { toast } from "sonner";
 
+interface Student {
+  _id: string;
+  name: string;
+  email: string;
+  gpa?: number;
+  courses?: {
+    courseId: string;
+    grade?: number;
+    progress?: string;
+  }[];
+}
+
+interface Course {
+  _id: string;
+  name: string;
+}
+
 export default function FacultyPanel() {
-  const { data: students = [], isLoading: loadingStudents } = useStudents();
-  const { data: courses = [], isLoading: loadingCourses } = useCourses();
+  const { data: students = [] } = useStudents();
+  const { data: courses = [] } = useCourses();
   const { mutate } = useAssignCourseToStudent();
 
   const [studentId, setStudentId] = useState("");
@@ -66,7 +83,7 @@ export default function FacultyPanel() {
             <SelectValue placeholder="Choose student" />
           </SelectTrigger>
           <SelectContent>
-            {students.map((s: any) => (
+            {students.map((s: Student) => (
               <SelectItem key={s._id} value={s._id}>
                 {s.name} ({s.email})
               </SelectItem>
@@ -83,9 +100,9 @@ export default function FacultyPanel() {
             <SelectValue placeholder="Choose course" />
           </SelectTrigger>
           <SelectContent>
-            {courses.map((c: any) => (
+            {courses.map((c: Course) => (
               <SelectItem key={c._id} value={c._id}>
-                {c.name}
+              {c.name}
               </SelectItem>
             ))}
           </SelectContent>

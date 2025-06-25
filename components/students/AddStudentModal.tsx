@@ -26,7 +26,7 @@ export default function AddStudentModal({
   const [form, setForm] = useState({ name: "", email: "", gpa: "" });
   const queryClient = useQueryClient();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await axios.post("/api/students", {

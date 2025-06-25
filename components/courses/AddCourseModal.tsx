@@ -24,6 +24,12 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 
+interface Faculty {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export default function AddCourseModal({
   open,
   onOpenChange,
@@ -35,7 +41,7 @@ export default function AddCourseModal({
   const { data: faculties } = useFaculties();
   const queryClient = useQueryClient();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await axios.post("/api/courses", form);
@@ -97,7 +103,7 @@ export default function AddCourseModal({
                 <SelectValue placeholder="Select Faculty" />
               </SelectTrigger>
               <SelectContent>
-                {faculties?.map((faculty: any) => (
+                {faculties?.map((faculty: Faculty) => (
                   <SelectItem key={faculty._id} value={faculty._id}>
                     {faculty.name}
                   </SelectItem>
