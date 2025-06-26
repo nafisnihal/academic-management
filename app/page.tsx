@@ -1,12 +1,17 @@
 "use client";
 
-import BarChart from "@/components/dashboard/BarChart";
 import DashboardSkeleton from "@/components/Skeletons/DashboardSkeleton";
 import LeaderBoard from "@/components/dashboard/LeaderBoard";
 import Stat from "@/components/dashboard/Stat";
 import { Card } from "@/components/ui/card";
 import { useDashboard } from "@/hooks/useDashboard";
 import { BookOpen, BookUser, ChartBarIncreasing, Users } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const BarChart = dynamic(() => import("@/components/dashboard/BarChart"), {
+  ssr: false,
+  loading: () => <div className="h-[300px] animate-pulse bg-muted rounded" />,
+});
 
 export default function DashboardPage() {
   const { data, isLoading } = useDashboard();
