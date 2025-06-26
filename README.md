@@ -30,7 +30,7 @@ A full-featured web application for managing Students, Courses, and Faculties, b
 
 Check out the live demo:
 
-[Academic Management Dashboard](https://academic-management-peach.vercel.app)
+[Academic Management Dashboard](https://academic-management-nn.vercel.app/)
 
 ---
 
