@@ -1,4 +1,5 @@
 import CourseStat from "@/components/reports/CourseStat";
+import TopPerformersTable from "@/components/reports/TopPerformersTable";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -13,7 +14,9 @@ export default function page() {
         <TabsContent value="course">
           <CourseStat />
         </TabsContent>
-        <TabsContent value="student">{/* <CourseStat /> */}</TabsContent>
+        <TabsContent value="student">
+          <TopPerformersTable />
+        </TabsContent>
       </Tabs>
     </div>
   );

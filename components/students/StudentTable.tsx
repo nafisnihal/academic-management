@@ -26,6 +26,7 @@ import { Eye, SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Skeleton } from "../ui/skeleton";
 import AddStudentModal from "./AddStudentModal";
 
 interface Student {
@@ -74,15 +75,14 @@ export default function StudentTable() {
     setCurrentPage(1);
   }, [searchTerm, data]);
 
-
-const handleEdit = (student: HandleEditArg) => {
+  const handleEdit = (student: HandleEditArg) => {
     setEditId(student._id);
     setForm({
-        name: student.name,
-        email: student.email,
-        gpa: student.gpa?.toString() ?? "",
+      name: student.name,
+      email: student.email,
+      gpa: student.gpa?.toString() ?? "",
     });
-};
+  };
 
   const handleUpdate = () => {
     updateStudent(
@@ -109,7 +109,7 @@ const handleEdit = (student: HandleEditArg) => {
     });
   };
 
-  if (isLoading) return <p className="p-4">Loading students...</p>;
+  if (isLoading) return <Skeleton className="h-40 w-full" />;
   if (error) return <p className="text-red-500">Error loading students</p>;
 
   return (

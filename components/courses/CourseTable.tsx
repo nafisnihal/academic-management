@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import FacultyManagementModal from "../faculty/FacultyManagementModal";
 import AddCourseModal from "./AddCourseModal";
+import { Skeleton } from "../ui/skeleton";
 
 interface Course {
   _id: string;
@@ -102,7 +103,7 @@ export default function CourseTable() {
     });
   };
 
-  if (isLoading) return <p className="p-4">Loading courses...</p>;
+  if (isLoading) return <Skeleton className="h-40 w-full" />;
   if (error) return <p className="text-red-500">Error loading courses</p>;
 
   return (

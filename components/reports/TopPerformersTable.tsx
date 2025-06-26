@@ -9,48 +9,59 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useCourseEnrollments } from "@/hooks/useReports";
+import { useTopPerformers } from "@/hooks/useReports";
 import { DownloadIcon } from "lucide-react";
 import Papa from "papaparse";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 
-interface CourseStat {
+// Define TypeScript interface for performer
+interface Performer {
+  studentId: string;
+  studentName: string;
+  courseId: string;
   courseName: string;
-  month: number;
-  year: number;
-  count: number;
+  grade: number;
 }
 
-export default function CourseStat() {
-  const { data, isLoading, error } = useCourseEnrollments();
+export default function TopPerformersTable() {
+  const {
+    data,
+    isLoading,
+    error,
+  }: {
+    data: Performer[] | undefined;
+    isLoading: boolean;
+    error: unknown;
+  } = useTopPerformers();
 
-  const handleDownloadCSV = () => {
+  const handleDownload = () => {
     if (!data || data.length === 0) return;
 
-    const csv = Papa.unparse(data, {
-      columns: ["courseName", "month", "year", "count"],
-    });
+    const csv = Papa.unparse(
+      data.map(({ courseName, studentName, grade }) => ({
+        Course: courseName,
+        Student: studentName,
+        Grade: grade,
+      }))
+    );
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "course_enrollments.csv");
-    document.body.appendChild(link);
+    link.download = "top_performers.csv";
     link.click();
-    document.body.removeChild(link);
   };
 
   if (isLoading) return <Skeleton className="h-40 w-full" />;
-  if (error instanceof Error) return <div>Failed to load enrollment data.</div>;
+  if (error instanceof Error) return <div>Failed to load top performers</div>;
 
   return (
-    <Card className="">
+    <Card>
       <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <CardTitle>Course Enrollments Over Time</CardTitle>
-        <Button onClick={handleDownloadCSV} size="sm" className="gap-2">
+        <CardTitle>Top Performing Students by Course</CardTitle>
+        <Button onClick={handleDownload} size="sm" className="gap-2">
           <DownloadIcon className="h-4 w-4" />
           Download CSV
         </Button>
@@ -60,28 +71,26 @@ export default function CourseStat() {
           <TableHeader>
             <TableRow>
               <TableHead>Course</TableHead>
-              <TableHead>Month</TableHead>
-              <TableHead>Year</TableHead>
-              <TableHead>Enrollments</TableHead>
+              <TableHead>Student</TableHead>
+              <TableHead>Grade</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data && data.length > 0 ? (
-              data.map((stat: CourseStat, idx: number) => (
+              data.map((item: Performer, idx: number) => (
                 <TableRow key={idx}>
-                  <TableCell>{stat.courseName}</TableCell>
-                  <TableCell>{stat.month}</TableCell>
-                  <TableCell>{stat.year}</TableCell>
-                  <TableCell>{stat.count}</TableCell>
+                  <TableCell>{item.courseName}</TableCell>
+                  <TableCell>{item.studentName}</TableCell>
+                  <TableCell>{item.grade}</TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={4}
-                  className="text-center py-6 text-muted-foreground"
+                  colSpan={3}
+                  className="text-center text-muted-foreground"
                 >
-                  No enrollment data available.
+                  No data available
                 </TableCell>
               </TableRow>
             )}

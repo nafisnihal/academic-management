@@ -28,9 +28,8 @@ export default function BarChart({
         endingShape: "flat",
       },
     },
-    colors: [
-      theme === "dark" ? "#fff" : "#000", // Indigo for dark mode, blue for light mode
-    ],
+    // use a color which will be visible in both light and dark themes like gray
+    colors: ["#4f46e5"],
     xaxis: {
       categories: data.map((d) => d.name),
       labels: {
