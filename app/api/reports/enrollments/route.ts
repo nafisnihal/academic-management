@@ -4,7 +4,6 @@ import { Student } from "@/models/student";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
-// Type for each enrollment
 interface EnrollmentEntry {
   courseId: Types.ObjectId | string;
   enrolledAt: Date;
@@ -12,7 +11,6 @@ interface EnrollmentEntry {
   progress?: string;
 }
 
-// Type for student document (used with lean)
 interface StudentDoc {
   _id: string;
   name: string;
