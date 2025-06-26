@@ -26,6 +26,14 @@ A full-featured web application for managing Students, Courses, and Faculties, b
 
 ---
 
+## 🌐 Live Demo
+
+Check out the live demo:
+
+[Academic Management Dashboard](https://academic-management-peach.vercel.app)
+
+---
+
 ## 🛠️ Setup Instructions
 
 ### 1. Clone the Repository
