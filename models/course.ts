@@ -1,4 +1,4 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const CourseSchema = new Schema(
   {
@@ -10,4 +10,5 @@ const CourseSchema = new Schema(
   { timestamps: true }
 );
 
-export const Course = models.Course || mongoose.model("Course", CourseSchema);
+export const Course =
+  mongoose.models.Course || mongoose.model("Course", CourseSchema);

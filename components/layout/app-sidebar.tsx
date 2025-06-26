@@ -29,6 +29,11 @@ const sidebarItems = [
     icon: Table,
     url: "/faculty-panel",
   },
+  {
+    title: "Reports",
+    icon: Table,
+    url: "/reports",
+  },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

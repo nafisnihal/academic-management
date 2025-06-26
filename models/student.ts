@@ -7,9 +7,17 @@ const StudentSchema = new Schema(
     gpa: { type: Number, default: 0.0 },
     enrolledCourses: [
       {
-        courseId: { type: String, required: true },
+        courseId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Course",
+          required: true,
+        },
         grade: { type: Number, default: null },
         progress: { type: String, default: "" },
+        enrolledAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },

@@ -20,8 +20,6 @@ export default function page() {
           <Card className="p-4">
             <CourseTable />
           </Card>
-          {/* <CourseList />
-          <AddCourseForm /> */}
         </TabsContent>
       </Tabs>
     </div>
